@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class States {
 	
@@ -9,6 +11,8 @@ public class States {
 							
 						};
 	
+	int Xcount = 2, Ocount = 2, totalCount = 4,utility = 0; //count of tiles on the board 
+	
 
 	public States(int[][] State) {//Constructor in case we need it 
 		
@@ -19,8 +23,13 @@ public class States {
 	}
 	
 	/*
-	 * Need a State.expand() function that generates next available legal moves
+	 * Need a State.expand() function that generates next available legal moves in a list
 	 */
+	public List<States> expand(){ 
+		ArrayList<States> movesList = new ArrayList<>();
+		
+		return movesList;
+	}
 	
 	public void lineDisplay(int l, int[][] array) {
 		for (int c =0; c<= 3; c++) {
@@ -45,8 +54,10 @@ public class States {
 	}
 	
 	
-	public boolean isTerminalState(States state) {//given a state on the board check if board is full
+	public boolean isTerminalState() {//given a state on the board check if board is full
 		//Goal/terminal state is when there are no zeros or twos on the board
+		if (totalCount==16) return true;
+		
 		return false;
 	}
 	
