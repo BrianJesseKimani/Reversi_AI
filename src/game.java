@@ -1,14 +1,19 @@
+//OLD
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.ArrayList; 
+import java.util.List; 
+import java.util.Random; 
+import java.util.Collections;
 
 
 public class game {
 	
-	public  static int[][] array = {
+	public  static int[][] board4by4 = {
 			//1 for dark and -1 for light
-			{-1,-1,-1,0},
-			{1,1,-1,0},
+			{0,0,0,0},
 			{0,1,-1,0},
+			{0,-1,1,0},
 			{0,0,0,0}
 	};
 	
@@ -34,13 +39,13 @@ public class game {
 		System.out.println("  a b c d");
 	}
 	
-	public static HashMap<String, String> hmap4by4 = new HashMap<String, String>();
 	
+	public  List<String> km = new ArrayList<>(); 
 	
-	public static String legalMoves(int xo, int[][] array) {
+	public static List<String> legalMoves(int xo, int[][] array) {
 		//because we are in 4X4 now, I only have to check the direct surroundings of the piece to find legal moves
 		//once we move to 8X8 the process will be trickier as we'll have to loop through the possible pieces that are farther than the direct surroundings
-		String res = "";
+		List<String>  res = new ArrayList<>();
 			for (int i=0; i<=3; i++) {
 				for (int j=0; j<=3; j++) {
 					if (array[i][j]==xo) { //xo being whatever team you're on
@@ -50,14 +55,16 @@ public class game {
 									if (array[k][m]== -1*xo) { //multiplying xo by -1 means "if this piece is from the opposite team ==> opposite sign"
 										int diffK = i-k;  int diffM = j-m;
 										if (k-diffK<4 && k-diffK>-1 && m-diffM<4 && m-diffM>-1 && array[k-diffK][m-diffM] == 0) {
-										array[k-diffK][m-diffM] = 2; 
+										//array[k-diffK][m-diffM] = 2; 
+											
 										//casting the legal moves indexes into string to find their a0 indexes in the hashmap:
 										String check = String.valueOf(k-diffK)+String.valueOf(m-diffM);
+										
 										String var= hmap4by4.get(check);
-									      res = res + var + " "; 
+										if(!(res.contains(var)))
+									      res.add(var);
 										}
 									}	
-							
 							}
 						}
 							}
@@ -68,6 +75,66 @@ public class game {
 		
 		return res;
 	}
+	
+	public static void randomMove(int u, int[][] array) {
+		Random rand = new Random(); 
+		String bit = "";
+		List<String> lm = legalMoves(u, array);
+		String lol = lm.get(rand.nextInt(lm.size())); 
+		//System.out.println("LOL " + lol);
+
+		for ( String key : hmap4by4.keySet() ) {
+		    if (hmap4by4.get(key).equals(lol))
+			{bit = key;
+		    //System.out.println(" KEY  "+ key);
+			//System.out.println(" HERE  "+ bit);
+			}
+		}
+
+		int index = Integer.valueOf(bit);
+		int i = index / 10% 10;
+		int j = index % 10;
+		array[i][j]=u;
+		for (int k=i-1; k <=i+1; k++) {
+			for (int m= j-1; m<=j+1; m++) {
+				if (k<4 && k>-1 && m<4 && m>-1 && array[k][m]!= array[i][j]) { 
+					if (array[k][m]== -1*u) {  
+						array[k][m]=u;
+					}	
+			}
+		}
+			}
+	}
+	
+	public static void userMove(String input, int u, int[][] array) {
+		String bit = "";
+		for ( String key : hmap4by4.keySet() ) {
+		    if (hmap4by4.get(key).equals(input))
+			bit=key ;
+		}
+		int index = Integer.valueOf(bit);
+		int i = index / 10% 10;
+		int j = index % 10;
+		array[i][j]=u;
+		
+		for (int k=i-1; k <=i+1; k++) {
+			for (int m= j-1; m<=j+1; m++) {
+				if (k<4 && k>-1 && m<4 && m>-1 && array[k][m]!= array[i][j]) { 
+					if (array[k][m]== -1*u) {  
+						array[k][m]=u;
+					}	
+			}
+		}
+			}
+	}
+		
+	
+	
+//	public static void updateBoard(String input, int u, int[][] array) {
+//		
+//	}
+	
+	public static HashMap<String, String> hmap4by4 = new HashMap<String, String>();
 	
 	public static void hmap44() {
 		hmap4by4.put("00","a1");
@@ -88,8 +155,12 @@ public class game {
 		hmap4by4.put("33", "d4");
 	}
 	
+	
 
 	public static void main(String[] args) {
+//		int u=67;
+//		System.out.println("el ahad: mod 10 ==> " + u % 10);
+//		System.out.println("el aacharat: div by 10 then mod 10 ==> " + u / 10% 10);
 		
 		System.out.println("Reversi by....");
 		System.out.println("Choose your game");
@@ -120,27 +191,49 @@ public class game {
 				int t = 0;
 				if (colorChoice.equals("x")) {
 					t = 1;
-					display(array);
-					String lm = legalMoves(t, array);
+					int lol =0;
+					display(board4by4);
+					boolean userCanMove = true;
+					//boolean opponentCanMove = true;
+					while (userCanMove == true) {
 					System.out.println(" ");
-
-					System.out.println("Now with legal moves displayed as L");
-
-					display(array);
 					
+					List<String> lm = legalMoves(t, board4by4);
+					if (lm.isEmpty()) {userCanMove = false;
+					System.out.println("Game Over.");
+					break;
+					}
+					System.out.println(" ");
 					System.out.println("Need help? legal moves possible: " + lm);
+					System.out.println("Your move: ");
+					String yourMove = s.next();
+					
+					if (lm.contains(yourMove) && userCanMove==true) {
+					userMove(yourMove, 1,board4by4);}
+					//else if(userCanMove==false) {}
+					else {System.out.println("Please choose a move that is legal."); break;}
+					
+					
+					display(board4by4);
+					System.out.println(" ");
+					System.out.println(" Your opponent has played: ");
+					System.out.println(" ");
+					randomMove(-t,  board4by4);
+					display(board4by4);
+					//lol ++;
+					}
 					
 
 				} else if (colorChoice.equals("o")) {
-					t = -1;
-					display(array);
-					String lm = legalMoves(t, array);
-					System.out.println(" ");
-
-					System.out.println("Now with legal moves displayed as L");
-
-					display(array);
-					System.out.println("Need help? legal moves possible: " + lm);
+//					t = -1;
+//					display(board4by4);
+//					String lm = legalMoves(t, board4by4);
+//					System.out.println(" ");
+//
+//					System.out.println("Now with legal moves displayed as L");
+//
+//					display(board4by4);
+//					System.out.println("Need help? legal moves possible: " + lm);
 				}
 
 			}
