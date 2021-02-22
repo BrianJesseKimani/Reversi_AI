@@ -11,6 +11,17 @@ public class States {
 							
 						};
 	
+	int[][] currentState8by8 = {
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},			
+			{0,0,0,0,0,0,0,0},			
+			{0,0,0,-1,1,0,0,0},	
+			{0,0,0,1,-1,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0}			
+	};
+	
 	int Xcount = 2, Ocount = 2, totalCount = 4,utility = 0; //count of tiles on the board 
 	
 
@@ -32,7 +43,7 @@ public class States {
 	}
 	
 	public void lineDisplay(int l, int[][] array) {
-		for (int c =0; c<= 3; c++) {
+		for (int c =0; c<array.length; c++) {
 		
 		if(array[l][c]==1) {System.out.print(" x");}
 		if(array[l][c]==-1) {System.out.print(" o");}
@@ -53,6 +64,18 @@ public class States {
 		System.out.println("  a b c d");
 	}
 	
+	public void displayState8by8() {
+		System.out.println("  a b c d e f g h");
+		System.out.print("1"); lineDisplay(0,currentState8by8); System.out.print(" 1"); System.out.println(" "); 
+		System.out.print("2"); lineDisplay(1,currentState8by8); System.out.print(" 2"); System.out.println(" "); 
+		System.out.print("3"); lineDisplay(2,currentState8by8); System.out.print(" 3"); System.out.println(" "); 
+		System.out.print("4"); lineDisplay(3,currentState8by8); System.out.print(" 4"); System.out.println(" "); 
+		System.out.print("5"); lineDisplay(4,currentState8by8); System.out.print(" 5"); System.out.println(" "); 
+		System.out.print("6"); lineDisplay(5,currentState8by8); System.out.print(" 6"); System.out.println(" "); 
+		System.out.print("7"); lineDisplay(6,currentState8by8); System.out.print(" 7"); System.out.println(" "); 
+		System.out.print("8"); lineDisplay(7,currentState8by8); System.out.print(" 8"); System.out.println(" "); 		
+		System.out.println("  a b c d e f g h");
+	}
 	
 	public boolean isTerminalState() {//given a state on the board check if board is full
 		//Goal/terminal state is when there are no zeros or twos on the board

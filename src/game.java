@@ -349,18 +349,75 @@ public class game {
 		hmap4by4.put("01", "b1");
 		hmap4by4.put("02", "c1");
 		hmap4by4.put("03", "d1");
+		hmap4by4.put("04", "e1");
+		hmap4by4.put("05", "f1");
+		hmap4by4.put("06", "g1");
+		hmap4by4.put("07", "h1");
+		
 		hmap4by4.put("10", "a2");
 		hmap4by4.put("11", "b2");
 		hmap4by4.put("12", "c2");
 		hmap4by4.put("13", "d2");
+		hmap4by4.put("14", "e2");
+		hmap4by4.put("15", "f2");
+		hmap4by4.put("16", "g2");
+		hmap4by4.put("17", "h2");
+		
 		hmap4by4.put("20", "a3");
 		hmap4by4.put("21", "b3");
 		hmap4by4.put("22", "c3");
 		hmap4by4.put("23", "d3");
+		hmap4by4.put("24", "e3");
+		hmap4by4.put("25", "f3");
+		hmap4by4.put("26", "g3");
+		hmap4by4.put("27", "h3");
+		
 		hmap4by4.put("30", "a4");
 		hmap4by4.put("31", "b4");
 		hmap4by4.put("32", "c4");
 		hmap4by4.put("33", "d4");
+		hmap4by4.put("34", "e4");
+		hmap4by4.put("35", "f4");
+		hmap4by4.put("36", "g4");
+		hmap4by4.put("37", "h4");
+		
+		hmap4by4.put("40", "a5");
+		hmap4by4.put("41", "b5");
+		hmap4by4.put("42", "c5");
+		hmap4by4.put("43", "d5");
+		hmap4by4.put("44", "e5");
+		hmap4by4.put("45", "f5");
+		hmap4by4.put("46", "g5");
+		hmap4by4.put("47", "h5");
+		
+		
+		hmap4by4.put("50", "a6");
+		hmap4by4.put("51", "b6");
+		hmap4by4.put("52", "c6");
+		hmap4by4.put("53", "d6");
+		hmap4by4.put("54", "e6");
+		hmap4by4.put("55", "f6");
+		hmap4by4.put("56", "g6");
+		hmap4by4.put("57", "h6");
+		
+		hmap4by4.put("60", "a7");
+		hmap4by4.put("61", "b7");
+		hmap4by4.put("62", "c7");
+		hmap4by4.put("63", "d7");
+		hmap4by4.put("64", "e7");
+		hmap4by4.put("65", "f7");
+		hmap4by4.put("66", "g7");
+		hmap4by4.put("67", "h7");
+		
+		hmap4by4.put("70", "a8");
+		hmap4by4.put("71", "b8");
+		hmap4by4.put("72", "c8");
+		hmap4by4.put("73", "d8");
+		hmap4by4.put("74", "e8");
+		hmap4by4.put("75", "f8");
+		hmap4by4.put("76", "g8");
+		hmap4by4.put("77", "h8");
+		
 	}
 	
 	
@@ -403,7 +460,7 @@ public class game {
 				if (colorChoice.equals("x")) {
 					t = 1;
 					int lol =0;
-					gameState.displayState();
+					gameState.displayState8by8();
 					boolean userCanMove = true;
 					//boolean opponentCanMove = true;
 					while (userCanMove == true) {
