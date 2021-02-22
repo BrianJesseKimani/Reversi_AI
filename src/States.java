@@ -44,27 +44,42 @@ public class States {
 			}
 	}
 	
-	public void displayState(int[][] array) {
+	public void displayState() {
 		System.out.println("  a b c d");
-		System.out.print("1"); lineDisplay(0,array); System.out.print(" 1"); System.out.println(" "); 
-		System.out.print("2"); lineDisplay(1,array); System.out.print(" 2"); System.out.println(" "); 
-		System.out.print("3"); lineDisplay(2,array); System.out.print(" 3"); System.out.println(" "); 
-		System.out.print("4"); lineDisplay(3,array); System.out.print(" 4"); System.out.println(" "); 
+		System.out.print("1"); lineDisplay(0,currentState); System.out.print(" 1"); System.out.println(" "); 
+		System.out.print("2"); lineDisplay(1,currentState); System.out.print(" 2"); System.out.println(" "); 
+		System.out.print("3"); lineDisplay(2,currentState); System.out.print(" 3"); System.out.println(" "); 
+		System.out.print("4"); lineDisplay(3,currentState); System.out.print(" 4"); System.out.println(" "); 
 		System.out.println("  a b c d");
 	}
 	
 	
 	public boolean isTerminalState() {//given a state on the board check if board is full
 		//Goal/terminal state is when there are no zeros or twos on the board
-		if (totalCount==16) return true;
+		totalCount = Xcount+Ocount;
+		if (totalCount>=16) return true;
 		
 		return false;
 	}
 	
-	public int Utility() {//returns +/- 1 or 0 when in a terminal state to determine the winner
+	public int Utility(int player) {//returns +/- 1 or 0 when in a terminal state to determine the winner
 		//counts the number of white & black tiles and whoever has more gets +1
 		//have a static variable int that tracks total score.
-		return 0;
+		if(player == 1) return Xcount - Ocount;
+		else return Ocount - Xcount;
+		
+	}
+	public void GameOver() {
+		System.out.println("Game Over!");
+		System.out.println(" X tiles = "+ Xcount);
+		System.out.println("O tiles = "+ Ocount);
+		if(Xcount>Ocount)
+			System.out.println("X wins!");
+		else if(Ocount>Xcount)
+			System.out.println("O wins!");
+		else
+			System.out.println("its a Tie!");
+		
 	}
 	
 	public int[][] getState(){

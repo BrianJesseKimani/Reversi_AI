@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Collections;
 
 
-public class game {
+public class game2 {
 	
 	public  static int[][] board4by4 = {
 			//1 for dark and -1 for light
@@ -44,99 +44,106 @@ public class game {
 	
 	public static List<String> legalMoves(int xo, int[][] array) {
 		//because we are in 4X4 now, I only have to check the direct surroundings of the piece to find legal moves
-				//once we move to 8X8 the process will be trickier as we'll have to loop through the possible pieces that are farther than the direct surroundings
-				List<String>  res = new ArrayList<>();
-				String check= ""; String var ="";
-					for (int i=0; i<=3; i++) {
-						for (int j=0; j<=3; j++) {
-							if (array[i][j]==xo) { //xo being whatever team you're on
-								for (int k=i-1; k <=i+1; k++) {
-									for (int m= j-1; m<=j+1; m++) {
-										if (k<4 && k>-1 && m<4 && m>-1 && array[k][m]!= array[i][j]) { //checking for surroundings that are different from the actual piece and are contained in our grid
-											if (array[k][m]== -1*xo) { //multiplying xo by -1 means "if this piece is from the opposite team ==> opposite sign"
-												int diffK = i-k;  int diffM = j-m;
-												if (k-diffK<4 && k-diffK>-1 && m-diffM<4 && m-diffM>-1) { 
-													if (array[k-diffK][m-diffM] == 0) {
-												//casting the legal moves indexes into string to find their a0 indexes in the hashmap:
-												check = String.valueOf(k-diffK)+String.valueOf(m-diffM);
-												var= hmap4by4.get(check);
-												if(!(res.contains(var))) {
-											      res.add(var);
-											      //array[k-diffK][m-diffM] = 2;
-											      }
-												
-												}
-												
-													else if(array[k-diffK][m-diffM] == -1*xo) {
+		//once we move to 8X8 the process will be trickier as we'll have to loop through the possible pieces that are farther than the direct surroundings
+		List<String>  res = new ArrayList<>();
+		String check= ""; String var ="";
+			for (int i=0; i<=3; i++) {
+				for (int j=0; j<=3; j++) {
+					if (array[i][j]==xo) { //xo being whatever team you're on
+						for (int k=i-1; k <=i+1; k++) {
+							for (int m= j-1; m<=j+1; m++) {
+								if (k<4 && k>-1 && m<4 && m>-1 && array[k][m]!= array[i][j]) { //checking for surroundings that are different from the actual piece and are contained in our grid
+									if (array[k][m]== -1*xo) { //multiplying xo by -1 means "if this piece is from the opposite team ==> opposite sign"
+										int diffK = i-k;  int diffM = j-m;
+										if (k-diffK<4 && k-diffK>-1 && m-diffM<4 && m-diffM>-1) { 
+											if (array[k-diffK][m-diffM] == 0) {
+										//casting the legal moves indexes into string to find their a0 indexes in the hashmap:
+										check = String.valueOf(k-diffK)+String.valueOf(m-diffM);
+										var= hmap4by4.get(check);
+										if(!(res.contains(var))) {
+									      res.add(var);
+									      //array[k-diffK][m-diffM] = 2;
+									      }
+										
+										}
+										
+											else if(array[k-diffK][m-diffM] == -1*xo) {
+											
+											if ((diffK==-1 ||diffK==1) && (diffM==-1 ||diffM==1) ) { 
+												int n=k; int o=m;
+												n=n-diffK; o=o-diffM;
+												while ( n<4 && n>-1 && o>-1 && o<4 ) {  
 													
-													if ((diffK==-1 ||diffK==1) && (diffM==-1 ||diffM==1) ) { 
-														int n=k; int o=m;
-														n=n-diffK; o=o-diffM;
-														while ( n<4 && n>-1 && o>-1 && o<4 ) {  
-															
-															if (array[n][o]==0) {
-																check = String.valueOf(n)+String.valueOf(o);
-																 var= hmap4by4.get(check);
-																 if(!(res.contains(var))) {
-																      res.add(var);
-																    //  array[n][o] = 2;
-																      }
-																		}
-															n=n-diffK; o=o-diffM;
-															}	
-												}
-													
-												else if ((diffK==-1 ||diffK==1) && diffM==0) { 
-														int n=k;
-														n=n-diffK;
-														while ( n<4 && n>-1) { 
-															if (array[n][j]==0) {
-																 check = String.valueOf(n)+String.valueOf(j);
-																 var= hmap4by4.get(check);
-																 if(!(res.contains(var))) {
-																      res.add(var);
-																    //  array[n][j] = 2;
-																      }
-																		}
-															n=n-diffK;
-															}
+													if (array[n][o]==0) {
+														check = String.valueOf(n)+String.valueOf(o);
+														 var= hmap4by4.get(check);
+														 if(!(res.contains(var))) {
+														      res.add(var);
+														    //  array[n][o] = 2;
+														      }
+																}
+													n=n-diffK; o=o-diffM;
+													}	
+										}
+											
+										else if ((diffK==-1 ||diffK==1) && diffM==0) { 
+												int n=k;
+												n=n-diffK;
+												while ( n<4 && n>-1) { 
+													if (array[n][j]==0) {
+														 check = String.valueOf(n)+String.valueOf(j);
+														 var= hmap4by4.get(check);
+														 if(!(res.contains(var))) {
+														      res.add(var);
+														    //  array[n][j] = 2;
+														      }
+																}
+													n=n-diffK;
 													}
+											}
+											
+											else if ((diffM==-1 ||diffM==1) && diffK==0) { 
+												int o=m;
+												o=o-diffM;
+												while ( o<4 && o>-1) {  
+													if (array[i][o]==0) {
+														check = String.valueOf(i)+String.valueOf(o);
+														 var= hmap4by4.get(check);
+														 if(!(res.contains(var))) {
+														      res.add(var);
+														     // array[i][o] = 2;
+														      }
+																}
+													o=o-diffM;
 													
-													else if ((diffM==-1 ||diffM==1) && diffK==0) { 
-														int o=m;
-														o=o-diffM;
-														while ( o<4 && o>-1) {  
-															if (array[i][o]==0) {
-																check = String.valueOf(i)+String.valueOf(o);
-																 var= hmap4by4.get(check);
-																 if(!(res.contains(var))) {
-																      res.add(var);
-																     // array[i][o] = 2;
-																      }
-																		}
-															o=o-diffM;
-															
-															}}
-													
-													
-													
-													
-												}
-												
-											}	
-									} }
-								}
-									}
-							}
+													}}
+											
+											
+											
+											
+										}
+										
+									}	
+							} }
 						}
+							}
 					}
-				
-				
-				return res;
+				}
+			}
+		
+		
+		return res;
 	}
 	
-	public static void randomMove(int u, States state) {
-		int[][] array = state.getState();
+//	public static void deleteL (int [][]array) {
+//		for (int i=0; i<=3; i++) {
+//			for (int j = 0; j<=3; j++) {
+//				if (array[i][j]==2) {array[i][j]=0;}
+//			}
+//		}
+//	}
+	
+	public static void randomMove(int u, int[][] array) {
 		Random rand = new Random(); 
 		String bit = "";
 		List<String> lm = legalMoves(u, array);
@@ -164,8 +171,6 @@ public class game {
 		int i = index / 10% 10;
 		int j = index % 10;
 		array[i][j]=u;
-		if(u==1) {state.Xcount++;} //changed to track the no. of tiles on board
-		else if(u==-1) {state.Ocount++;}
 		
 		for (int k=i-1; k <=i+1; k++) {
 			
@@ -188,8 +193,6 @@ public class game {
 							while (n!=k && o!=m) { n=n+diffK; o=o+diffM;
 							if (array[n][o]==-1*u) {
 								array[n][o]=u;  
-								if(u==1) {state.Xcount++; state.Ocount--;} //changed to track the no. of tiles on board
-								else if(u==-1) {state.Xcount--;state.Ocount++;}
 								}}
 							}
 						}
@@ -208,8 +211,6 @@ public class game {
 							while (n!=k) {n=n+diffK;
 							if (array[n][m]==-1*u) {
 								array[n][m]=u; 
-								if(u==1) {state.Xcount++; state.Ocount--;} //changed to track the no. of tiles on board
-								else if(u==-1) {state.Xcount--;state.Ocount++;}
 								}}
 							}
 						}
@@ -229,8 +230,6 @@ public class game {
 								o=o+diffM;
 								if (array[k][o]==-1*u) {
 								array[k][o]=u;  
-								if(u==1) {state.Xcount++; state.Ocount--;} //changed to track the no. of tiles on board
-								else if(u==-1) {state.Xcount--;state.Ocount++;}
 								}}
 						}
 						}
@@ -240,10 +239,10 @@ public class game {
 		}
 			}
 	}
-	}
+		}
 	
-	public static States userMove(String input, int u, States state) { //changed from return int[][] to return State
-		int[][] array = state.getState();
+	public static void userMove(String input, int u, int[][] array) {
+		States state = new States();
 		String bit = "";
 		for ( String key : hmap4by4.keySet() ) {
 		    if (hmap4by4.get(key).equals(input))
@@ -253,8 +252,8 @@ public class game {
 		int i = index / 10 % 10;
 		int j = index % 10;
 		array[i][j]=u;
-		if(u==1) {state.Xcount++;} //changed to track the no. of tiles on board
-		else if(u==-1) {state.Ocount++;}
+		if(u==1) {state.Xcount++; state.Ocount--;} //changed to track the no. of tiles on board
+		else if(u==-1) {state.Xcount--;state.Ocount++;}
 		
 		for (int k=i-1; k <=i+1; k++) {
 			for (int m= j-1; m<=j+1; m++) {
@@ -332,15 +331,11 @@ public class game {
 			}
 			
 			}}
-		
-		return state;
+			
 	}
 		
 	
-	
-//	public static void updateBoard(String input, int u, int[][] array) {
-//		
-//	}
+
 	
 	public static HashMap<String, String> hmap4by4 = new HashMap<String, String>();
 	
@@ -366,12 +361,6 @@ public class game {
 	
 
 	public static void main(String[] args) {
-//		int u=67;
-//		System.out.println("el ahad: mod 10 ==> " + u % 10);
-//		System.out.println("el aacharat: div by 10 then mod 10 ==> " + u / 10% 10);
-		
-		States gameState = new States();
-		Solution solution = new Solution();
 		
 		System.out.println("Reversi by....");
 		System.out.println("Choose your game");
@@ -401,112 +390,46 @@ public class game {
 				String colorChoice = s.next();
 				int t = 0;
 				if (colorChoice.equals("x")) {
-					t = 1;
-					int lol =0;
-					gameState.displayState();
+					t = 1; int skip =0;
+					boolean winner =false;
+					
 					boolean userCanMove = true;
-					//boolean opponentCanMove = true;
-					while (userCanMove == true) {
+					while (winner == false) {
 					System.out.println(" ");
 					
-					List<String> lm = legalMoves(t, gameState.getState()); //change to expand function in states
-					if (lm.isEmpty()) { // game not over but rather player is skipped
-						System.out.println("No moves to play, Skipped!");
-						lm = legalMoves(-t, gameState.getState());
-						if(lm.isEmpty()) {
-							if(gameState.isTerminalState()) {
-								gameState.GameOver();
-								userCanMove = false;
-								break;
-							}
-							else
-								System.out.println("No move possible, skipped!");
-							continue;
-						}
-						//for(String str: lm) {//generates all the child nodes for frontier
-							States duplicate = gameState;  
-							//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-							solution.populateFrontier(gameState, solution.makeNode(gameState));
-						//}
-						gameState = solution.graphSearch(-t);//AI plays using minimax
-						//if(gameState == null)??
-						//randomMove(-t,  gameState);
-						gameState.displayState();
-						continue;
-						//game should play till end or until player quits, add q button to provide that option
-//						userCanMove = false;
-//						System.out.println("Game Over.");
-//						break;
+					List<String> lm = legalMoves(t, board4by4);
+					display(board4by4);
+					if (lm.isEmpty()) {
+					System.out.println("No moves possible. Skip!");
+					skip++;
 					}
+					else {
 					System.out.println(" ");
 					System.out.println("Need help? legal moves possible: " + lm);
-					System.out.println("Or press \"q\" to quit");
 					System.out.println("Your move: ");
 					String yourMove = s.next();
-					
-					if(yourMove.equalsIgnoreCase("q")) {
-						userCanMove = false;
-						System.out.println("Game Forfeited....");
-						//insert finish function - declare winner
-						break;
-					}
+					//deleteL(board4by4);
 					if (lm.contains(yourMove) && userCanMove==true) {
-					userMove(yourMove, 1,gameState);}
+					userMove(yourMove, 1,board4by4);}
 					//else if(userCanMove==false) {}
-					else {System.out.println("Please choose a move that is legal."); continue;}
+					else {System.out.println("Please choose a move that is legal."); break;}
+					}
 					
-					
-					gameState.displayState();
+					display(board4by4);
 					System.out.println(" ");
 					System.out.println(" Your opponent has played: ");
 					System.out.println(" ");
-					lm = legalMoves(-t, gameState.getState());//legal moves for AI
-					if(lm.isEmpty()) {
-						if(gameState.isTerminalState()) {
-							gameState.GameOver();
-							userCanMove = false;
-							break;
-						}
-						else
-							System.out.println("No move possible, skipped!");
-						continue;
+					randomMove(-t,  board4by4);
+					
+					
+					if (skip == 3) {winner = true;
+					System.out.println(" WE HAVE A WINNER! ");
 					}
-					//for(String str: lm) {//generates all the child nodes for frontier
-						States duplicate = gameState;  
-						//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-					solution.populateFrontier(gameState, solution.makeNode(gameState));
-					//}
-					
-					
-					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
-					
-					System.out.println(solution.frontier.isEmpty());
-					gameState = solution.graphSearch(-t);//AI plays using minimax
-					//if(gameState == null)??
-					//randomMove(-t,  gameState);
-					System.out.println(" ");
-					System.out.println(gameState.utility);
-					System.out.println(" ");
-				
-					gameState.displayState();
-					
-					
-					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
-					System.out.println("");
-					//lol ++;
 					}
 					
 
 				} else if (colorChoice.equals("o")) {
-//					t = -1;
-//					display(board4by4);
-//					String lm = legalMoves(t, board4by4);
-//					System.out.println(" ");
-//
-//					System.out.println("Now with legal moves displayed as L");
-//
-//					display(board4by4);
-//					System.out.println("Need help? legal moves possible: " + lm);
+				
 				}
 
 			}
