@@ -335,6 +335,109 @@ public class game {
 		
 		return state;
 	}
+	
+	public static States copyMove(String input, int u, States state) { //changed from return int[][] to return State
+		States copy = new States();
+		copy.Ocount = state.Ocount;
+		copy.Xcount = state.Xcount;
+		copy.totalCount = copy.Xcount +copy.Ocount;
+		for(int i=0;i<state.currentState.length;i++) {
+			for(int j=0;j<state.currentState[i].length;j++) {
+				copy.currentState[i][j] = state.currentState[i][j];
+			}
+		}
+		int[][] array = copy.getState();
+		String bit = "";
+		for ( String key : hmap4by4.keySet() ) {
+		    if (hmap4by4.get(key).equals(input))
+			bit=key ;
+		}
+		int index = Integer.valueOf(bit);
+		int i = index / 10 % 10;
+		int j = index % 10;
+		array[i][j]=u;
+		if(u==1) {copy.Xcount++;} //changed to track the no. of tiles on board
+		else if(u==-1) {copy.Ocount++;}
+		
+		for (int k=i-1; k <=i+1; k++) {
+			for (int m= j-1; m<=j+1; m++) {
+				if (k<4 && k>-1 && m<4 && m>-1 && array[k][m]!= array[i][j]) { 
+					if (array[k][m]== -1*u ) {  
+						int diffK = i-k;  int diffM = j-m;
+						if ((diffK==-1 ||diffK==1) && (diffM==-1 ||diffM==1) ) { 
+							//System.out.println("diagonal innn ");
+							int n=k; int o=m;
+							n=n-diffK; o=o-diffM;
+							while ( n<4 && n>-1 && o>-1 && o<4 ) {  
+								
+								if (array[n][o]==u) {
+									break;
+											}
+								n=n-diffK; o=o-diffM;
+								}
+							if ( o<4 && o>-1 && n<4 && n>-1) {  
+							while (n!=k && o!=m) { n=n+diffK; o=o+diffM;
+							if (array[n][o]==-1*u) {
+								array[n][o]=u;  
+								if(u==1) {copy.Xcount++; copy.Ocount--;} //changed to track the no. of tiles on board
+								else if(u==-1) {copy.Xcount--;copy.Ocount++;}
+								}}
+							}
+						}
+						
+						else if ((diffK==-1 ||diffK==1) && diffM==0) { 
+							//System.out.println("vertical innn ");
+
+							int n=k;
+							n=n-diffK;
+							while ( n<4 && n>-1) {  
+								
+								if (array[n][j]==u) {
+									break;
+											}
+								n=n-diffK;
+								}
+							if ( n<4 && n>-1) {  
+							while (n!=k) {n=n+diffK;
+							if (array[n][m]==-1*u) {
+								array[n][m]=u;  
+								if(u==1) {copy.Xcount++; copy.Ocount--;} //changed to track the no. of tiles on board
+								else if(u==-1) {copy.Xcount--;copy.Ocount++;}
+								}}
+							}
+						}
+						
+						
+						else if ((diffM==-1 ||diffM==1) && diffK==0) { 
+							//System.out.println("horizontal innn ");
+							int o=m;
+							o=o-diffM;
+							while ( o<4 && o>-1) {  
+								if (array[i][o]==u) {
+									break;
+											}
+								o=o-diffM;
+								
+								}
+							if ( o<4 && o>-1) {  
+							while (o!=m) {
+								o=o+diffM;
+								if (array[k][o]==-1*u) {
+								array[k][o]=u; 
+								if(u==1) {copy.Xcount++; copy.Ocount--;} //changed to track the no. of tiles on board
+								else if(u==-1) {copy.Xcount--;copy.Ocount++;}
+								}}
+						}
+						}
+						
+						
+					}	
+			}
+			
+			}}
+		
+		return copy;
+	}
 		
 	
 	
@@ -460,7 +563,7 @@ public class game {
 				if (colorChoice.equals("x")) {
 					t = 1;
 					int lol =0;
-					gameState.displayState8by8();
+					gameState.displayState();
 					boolean userCanMove = true;
 					//boolean opponentCanMove = true;
 					while (userCanMove == true) {
@@ -508,7 +611,7 @@ public class game {
 						break;
 					}
 					if (lm.contains(yourMove) && userCanMove==true) {
-					userMove(yourMove, 1,gameState);}
+					gameState = copyMove(yourMove, t,gameState);}
 					//else if(userCanMove==false) {}
 					else {System.out.println("Please choose a move that is legal."); continue;}
 					
@@ -517,6 +620,8 @@ public class game {
 					System.out.println(" ");
 					System.out.println(" Your opponent has played: ");
 					System.out.println(" ");
+					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
+
 					lm = legalMoves(-t, gameState.getState());//legal moves for AI
 					if(lm.isEmpty()) {
 						if(gameState.isTerminalState()) {
@@ -535,7 +640,6 @@ public class game {
 					//}
 					
 					
-					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
 					
 					System.out.println(solution.frontier.isEmpty());
 					gameState = solution.graphSearch(-t);//AI plays using minimax
