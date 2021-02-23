@@ -530,7 +530,7 @@ public class game {
 //		System.out.println("el ahad: mod 10 ==> " + u % 10);
 //		System.out.println("el aacharat: div by 10 then mod 10 ==> " + u / 10% 10);
 		
-		States gameState = new States();
+		//States gameState = new States();
 		Solution solution = new Solution();
 		
 		System.out.println("Reversi by....");
@@ -542,6 +542,7 @@ public class game {
 		Scanner s = new Scanner(System.in);
 		System.out.print("Your choice? ");
 		int gameChoice = s.nextInt();
+		States gameState = new States(gameChoice);
 
 		if (gameChoice == 1) {
 			hmap44();
@@ -568,9 +569,11 @@ public class game {
 					//boolean opponentCanMove = true;
 					while (userCanMove == true) {
 					System.out.println(" ");
+					int skips = 0;
 					
 					List<String> lm = legalMoves(t, gameState.getState()); //change to expand function in states
 					if (lm.isEmpty()) { // game not over but rather player is skipped
+						skips++;
 						System.out.println("No moves to play, Skipped!");
 						lm = legalMoves(-t, gameState.getState());
 						if(lm.isEmpty()) {
@@ -579,8 +582,14 @@ public class game {
 								userCanMove = false;
 								break;
 							}
-							else
+							else {
 								System.out.println("No move possible, skipped!");
+								skips++;
+								if(skips>=2) {
+									gameState.GameOver();
+									break;
+								}
+							}
 							continue;
 						}
 						//for(String str: lm) {//generates all the child nodes for frontier
@@ -629,8 +638,10 @@ public class game {
 							userCanMove = false;
 							break;
 						}
-						else
+						else {
 							System.out.println("No move possible, skipped!");
+							skips++;
+						}
 						continue;
 					}
 					//for(String str: lm) {//generates all the child nodes for frontier

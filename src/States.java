@@ -32,6 +32,11 @@ public class States {
 	public States() { // second constrctor
 		
 	}
+	public States(int whichState) {
+		if(whichState==3) {
+			currentState = currentState8by8;
+		}
+	}
 	
 	/*
 	 * Need a State.expand() function that generates next available legal moves in a list
