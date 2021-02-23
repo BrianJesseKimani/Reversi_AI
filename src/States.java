@@ -71,14 +71,14 @@ public class States {
 	
 	public void displayState8by8() {
 		System.out.println("  a b c d e f g h");
-		System.out.print("1"); lineDisplay(0,currentState8by8); System.out.print(" 1"); System.out.println(" "); 
-		System.out.print("2"); lineDisplay(1,currentState8by8); System.out.print(" 2"); System.out.println(" "); 
-		System.out.print("3"); lineDisplay(2,currentState8by8); System.out.print(" 3"); System.out.println(" "); 
-		System.out.print("4"); lineDisplay(3,currentState8by8); System.out.print(" 4"); System.out.println(" "); 
-		System.out.print("5"); lineDisplay(4,currentState8by8); System.out.print(" 5"); System.out.println(" "); 
-		System.out.print("6"); lineDisplay(5,currentState8by8); System.out.print(" 6"); System.out.println(" "); 
-		System.out.print("7"); lineDisplay(6,currentState8by8); System.out.print(" 7"); System.out.println(" "); 
-		System.out.print("8"); lineDisplay(7,currentState8by8); System.out.print(" 8"); System.out.println(" "); 		
+		System.out.print("1"); lineDisplay(0,currentState); System.out.print(" 1"); System.out.println(" "); 
+		System.out.print("2"); lineDisplay(1,currentState); System.out.print(" 2"); System.out.println(" "); 
+		System.out.print("3"); lineDisplay(2,currentState); System.out.print(" 3"); System.out.println(" "); 
+		System.out.print("4"); lineDisplay(3,currentState); System.out.print(" 4"); System.out.println(" "); 
+		System.out.print("5"); lineDisplay(4,currentState); System.out.print(" 5"); System.out.println(" "); 
+		System.out.print("6"); lineDisplay(5,currentState); System.out.print(" 6"); System.out.println(" "); 
+		System.out.print("7"); lineDisplay(6,currentState); System.out.print(" 7"); System.out.println(" "); 
+		System.out.print("8"); lineDisplay(7,currentState); System.out.print(" 8"); System.out.println(" "); 		
 		System.out.println("  a b c d e f g h");
 	}
 	
@@ -87,6 +87,11 @@ public class States {
 		totalCount = Xcount+Ocount;
 		if (totalCount>=16) return true;
 		
+		return false;
+	}
+	public boolean isTerminalState8by8() {
+		totalCount = Xcount+Ocount;
+		if(totalCount>=64)return true;
 		return false;
 	}
 	

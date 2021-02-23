@@ -57,7 +57,7 @@ public class Solution { // we create the sollution class.
 		//while(true) { // Game running
 			if(frontier.isEmpty()) return null; //finish game function? print winners
 			
-			Node node1 = minimax(player); // selects best next node from frontier for the current player
+			Node node1 = Alpha_Beta_Minimax(player);// selects best next node from frontier for the current player
 			//if(node1.state.isTerminalState()) return null; //finish game function?
 		//	node1.state.displayState();//else shoe computer move and promt user to play 
 			
@@ -85,10 +85,8 @@ public class Solution { // we create the sollution class.
 //		for(String str: lm) {
 //			frontier.add(new Node(game.userMove(str, player, node.state),node));
 //		}
-		
 		return node;					
 	}
-	
 	public States maxValue(States state,int player) {
 		//System.out.println("Player = "+ player);
 		if(state.isTerminalState()) {
@@ -122,16 +120,11 @@ public class Solution { // we create the sollution class.
 				States best = store.pop();
 				States answer = minValue(best,(-player));
 				if(answer.utility>state.utility)
-					state = best;
-				
+					state = best;	
 			}
-				
-			
 			return state;
-		}
-			
+		}	
 	}
-
 	public States minValue(States state, int player) {
 		//System.out.println("Player = "+ player);
 		if(state.isTerminalState()) {
@@ -166,6 +159,82 @@ public class Solution { // we create the sollution class.
 				States answer = maxValue(best,(-player));
 				if(answer.utility<state.utility)
 					state = best;
+				}
+			
+			return state;
+		}
+	}
+	
+	
+	
+	public Node Alpha_Beta_Minimax(int player) {//minimax
+	
+		Node node = frontier.peek();
+		Player = player;
+		node.state = AlphaBeta_MaxValue(node.state,player,Integer.MIN_VALUE,Integer.MAX_VALUE);
+		
+		return node;					
+	}
+	public States AlphaBeta_MaxValue(States state,int player,int alpha,int beta) {
+		if(state.isTerminalState8by8()) {
+			state.utility = state.Utility(Player);
+			return state;
+		}
+		else {
+			state.utility = Integer.MIN_VALUE;
+			States newState = state;//new States();
+			States duplicate = state;
+			List<String> lm = game.legalMoves(player, state.getState());
+			if(lm.isEmpty()) {
+				
+				return state;
+			}
+			Stack<States> store = new Stack<States>();
+			for(String str: lm) {
+				duplicate = state;
+				newState = game.copyMove(str, player, duplicate);
+				//newState.displayState();
+				store.add(newState);
+				}
+			while(!store.isEmpty()) {
+				States best = store.pop();
+				States answer = AlphaBeta_MinValue(best,(-player),alpha,beta);
+				if(answer.utility>state.utility) {
+					state = best;	
+					alpha = Integer.max(alpha, state.utility);
+				}
+					if(state.utility>=beta) return state;
+			}
+			return state;
+		}	
+	}
+	public States AlphaBeta_MinValue(States state, int player,int alpha,int beta) {
+		if(state.isTerminalState8by8()) {
+			state.utility = state.Utility(Player);
+			return state;
+		}
+		else {
+			state.utility = Integer.MAX_VALUE;
+			States newState = state;//new States();
+			States duplicate = state;
+			List<String> lm = game.legalMoves(player, state.getState());
+			if(lm.isEmpty()) {
+				return state;
+			}
+			Stack<States> store = new Stack<States>();
+			for(String str: lm) {
+				duplicate = state;
+				newState = game.copyMove(str, player, duplicate);
+				store.add(newState);
+				}
+			while(!store.isEmpty()) {
+			    States best = store.pop();
+				States answer = AlphaBeta_MaxValue(best,(-player),alpha,beta);
+				if(answer.utility<state.utility) {
+					state = best;
+					beta = Integer.min(beta, state.utility);
+				}
+					if(state.utility<=alpha) return state;
 				}
 			
 			return state;
