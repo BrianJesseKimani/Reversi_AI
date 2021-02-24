@@ -22,7 +22,7 @@ public class States {
 			{0,0,0,0,0,0,0,0}			
 	};
 	
-	int Xcount = 2, Ocount = 2, totalCount = 4,utility = 0; //count of tiles on the board 
+	int Xcount = 2, Ocount = 2, totalCount = 4,utility = 0,heuristic=0; //count of tiles on the board 
 	
 
 	public States(int[][] State) {//Constructor in case we need it 

@@ -584,10 +584,14 @@ public class game {
 			
 			else if (algoChoice == 4) {
 				System.out.println(
-					"You have chosen an agent that uses H-MINIMAX with a fixed depth cutoff and a-b pruning");			
+					"You have chosen an agent that uses H-MINIMAX with a fixed depth cutoff and a-b pruning");
+					System.out.println("Please choose a CutOff Depth: ");
+					solution.Cutoff = s.nextInt();
+					System.out.println("CutOff at depth "+ solution.Cutoff+ " selected");
 				}
-			
-			
+			else {
+				System.out.println("please make a valid choice!");
+			}
 			
 			
 				System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
@@ -599,12 +603,12 @@ public class game {
 					
 					gameState.displayState();
 					boolean userCanMove = true;
-					//boolean opponentCanMove = true;
+					
 					while (userCanMove == true) {
 					System.out.println(" ");
 					int skips = 0;
 					
-					List<String> lm = legalMoves(t, gameState.getState()); //change to expand function in states
+					List<String> lm = legalMoves(t, gameState.getState()); 
 					if (lm.isEmpty()) { // game not over but rather player is skipped
 						skips++;
 						System.out.println("No moves to play, Skipped!");
@@ -625,36 +629,29 @@ public class game {
 							}
 							continue;
 						}
-						//for(String str: lm) {//generates all the child nodes for frontier
-							States duplicate = gameState;  
-							//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-							solution.populateFrontier(gameState, solution.makeNode(gameState));
-						//}
-							
-							if (algoChoice == 1) {
-								randomMove(-t,  gameState);
-							}
-							
-							else if (algoChoice == 2) {
-								gameState = solution.graphSearch(-t);//AI plays using minimax
-							}
-							
-							else if (algoChoice == 3) {
-								//gameState = solution.graphSearch(-t);//AI plays using minimax
-							}
-							
-							else if (algoChoice == 4) {
-								//gameState = solution.graphSearch(-t);//AI plays using minimax
-							}
 						
-						//if(gameState == null)??
-						//randomMove(-t,  gameState);
+						solution.populateFrontier(gameState, solution.makeNode(gameState));
+						
+							
+						if (algoChoice == 1) {
+							randomMove(-t,  gameState);
+						}
+						
+						else if (algoChoice == 2) {
+							gameState = solution.graphSearch(-t,2);//AI plays using minimax
+						}
+						
+						else if (algoChoice == 3) {
+							gameState = solution.graphSearch(-t,3);//AI plays using minimax
+						}
+						
+						else if (algoChoice == 4) {
+							gameState = solution.graphSearch(-t,4);//AI plays using minimax
+						}
+						
 						gameState.displayState();
 						continue;
-						//game should play till end or until player quits, add q button to provide that option
-//						userCanMove = false;
-//						System.out.println("Game Over.");
-//						break;
+
 					}
 					System.out.println(" ");
 					System.out.println("Need help? legal moves possible: " + lm);
@@ -669,9 +666,13 @@ public class game {
 						break;
 					}
 					if (lm.contains(yourMove) && userCanMove==true) {
-					gameState = copyMove(yourMove, t,gameState);}
+						gameState = copyMove(yourMove, t,gameState);
+					}
 					//else if(userCanMove==false) {}
-					else {System.out.println("Please choose a move that is legal."); continue;}
+					else {
+						System.out.println("Please choose a move that is legal."); 
+						continue;
+					}
 					
 					
 					gameState.displayState();
@@ -693,196 +694,36 @@ public class game {
 						}
 						continue;
 					}
-					//for(String str: lm) {//generates all the child nodes for frontier
-						States duplicate = gameState;  
-						//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
+				
 					solution.populateFrontier(gameState, solution.makeNode(gameState));
-					//}
-					
-					
-					
-					System.out.println(solution.frontier.isEmpty());
-					
-					
-					//gameState = solution.graphSearch(-t);//AI plays using minimax
-					//if(gameState == null)??
 					
 					if (algoChoice == 1) {
 						randomMove(-t,  gameState);
 					}
 					
 					else if (algoChoice == 2) {
-						gameState = solution.graphSearch(-t);//AI plays using minimax
+						gameState = solution.graphSearch(-t,2);//AI plays using minimax
 					}
 					
 					else if (algoChoice == 3) {
-						//gameState = solution.graphSearch(-t);//AI plays using minimax
+						gameState = solution.graphSearch(-t,3);//AI plays using minimax
 					}
 					
 					else if (algoChoice == 4) {
-						//gameState = solution.graphSearch(-t);//AI plays using minimax
+						gameState = solution.graphSearch(-t,4);//AI plays using minimax
 					}
 					System.out.println(" ");
-					System.out.println(gameState.utility);
+					//System.out.println(gameState.utility);
 					System.out.println(" ");
-				
 					gameState.displayState();
-					
-					
 					System.out.println("Ocount = "+ gameState.Ocount + ", Xcount = "+ gameState.Xcount);
 					System.out.println("");
 				
 					}
-					
-
-			
-
-			
-//
-//			 if (algoChoice == 2) {
-//				System.out.println("You have chosen an agent that uses MINIMAX");
-//				System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
-//
-//				String colorChoice = s.next();
-//				int t = 0;
-//				if (colorChoice.equals("x")) t = 1;
-//				else if (colorChoice.equals("o"))  t = -1;
-//					
-//					gameState.displayState();
-//					boolean userCanMove = true;
-//					//boolean opponentCanMove = true;
-//					while (userCanMove == true) {
-//					System.out.println(" ");
-//					int skips = 0;
-//					
-//					List<String> lm = legalMoves(t, gameState.getState()); //change to expand function in states
-//					if (lm.isEmpty()) { // game not over but rather player is skipped
-//						skips++;
-//						System.out.println("No moves to play, Skipped!");
-//						lm = legalMoves(-t, gameState.getState());
-//						if(lm.isEmpty()) {
-//							if(gameState.isTerminalState()) {
-//								gameState.GameOver();
-//								userCanMove = false;
-//								break;
-//							}
-//							else {
-//								System.out.println("No move possible, skipped!");
-//								skips++;
-//								if(skips>=2) {
-//									gameState.GameOver();
-//									break;
-//								}
-//							}
-//							continue;
-//						}
-//						//for(String str: lm) {//generates all the child nodes for frontier
-//							States duplicate = gameState;  
-//							//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-//							solution.populateFrontier(gameState, solution.makeNode(gameState));
-//						//}
-//						gameState = solution.graphSearch(-t);//AI plays using minimax
-//						//if(gameState == null)??
-//						//randomMove(-t,  gameState);
-//						gameState.displayState();
-//						continue;
-//						//game should play till end or until player quits, add q button to provide that option
-////						userCanMove = false;
-////						System.out.println("Game Over.");
-////						break;
-//					}
-//					System.out.println(" ");
-//					System.out.println("Need help? legal moves possible: " + lm);
-//					System.out.println("Or press \"q\" to quit");
-//					System.out.println("Your move: ");
-//					String yourMove = s.next();
-//					
-//					if(yourMove.equalsIgnoreCase("q")) {
-//						userCanMove = false;
-//						System.out.println("Game Forfeited....");
-//						//insert finish function - declare winner
-//						break;
-//					}
-//					if (lm.contains(yourMove) && userCanMove==true) {
-//					gameState = copyMove(yourMove, t,gameState);}
-//					//else if(userCanMove==false) {}
-//					else {System.out.println("Please choose a move that is legal."); continue;}
-//					
-//					
-//					gameState.displayState();
-//					System.out.println(" ");
-//					System.out.println(" Your opponent has played: ");
-//					System.out.println(" ");
-//					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
-//
-//					lm = legalMoves(-t, gameState.getState());//legal moves for AI
-//					if(lm.isEmpty()) {
-//						if(gameState.isTerminalState()) {
-//							gameState.GameOver();
-//							userCanMove = false;
-//							break;
-//						}
-//						else {
-//							System.out.println("No move possible, skipped!");
-//							skips++;
-//						}
-//						continue;
-//					}
-//					//for(String str: lm) {//generates all the child nodes for frontier
-//						States duplicate = gameState;  
-//						//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-//					solution.populateFrontier(gameState, solution.makeNode(gameState));
-//					//}
-//					
-//					
-//					
-//					System.out.println(solution.frontier.isEmpty());
-//					gameState = solution.graphSearch(-t);//AI plays using minimax
-//					//if(gameState == null)??
-//					//randomMove(-t,  gameState);
-//					System.out.println(" ");
-//					System.out.println(gameState.utility);
-//					System.out.println(" ");
-//				
-//					gameState.displayState();
-//					
-//					
-//					System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
-//					System.out.println("");
-//					//lol ++;
-//					}
-//					
-//
-//		
-//			}
-
-//			else if (algoChoice == 3) {
-//				System.out.println("You have chosen an agent that uses MINIMAX with alpha-beta pruning");
-//				System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
-//
-//				String colorChoice = s.next();
-//				int t = 0;
-//				if (colorChoice.equals("x")) t = 1;
-//				else if (colorChoice.equals("o"))  t = -1;
-//
-//			}
-//
-//			else if (algoChoice == 4) {
-//				System.out.println(
-//						"You have chosen an agent that uses H-MINIMAX with a fixed depth cutoff and a-b pruning");
-//				System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
-//
-//				String colorChoice = s.next();
-//				int t = 0;
-//				if (colorChoice.equals("x")) t = 1;
-//				else if (colorChoice.equals("o"))  t = -1;
-//
-//			}
-
 		}
 
 		else if (gameChoice == 2) {
-			System.out.println("You have chosen: Medium 6x6 Reversi... Coming Soon");
+			System.out.println("You have chosen: Medium 6x6 Reversi... Coming Soon!");
 //			System.out.println("Choose your opponent:");
 //			System.out.println("1. An agent that plays randomly");
 //			System.out.println("2. An agent that uses MINIMAX");
@@ -940,10 +781,27 @@ public class game {
 		else if (gameChoice == 3) {
 			hmap44();
 			System.out.println("You have chosen: Standard 8x8 Reversi");
-			System.out.println("We will use H-MINIMAX with a fixed depth cutoff and a-b pruning");
+			System.out.println("Choose your opponent:");
+			System.out.println("1. An agent that plays randomly");
+			System.out.println("4. An agent that uses H-MINIMAX with a fixed depth cutoff and a-b pruning");
 			
+			System.out.print("Your choice? ");
+			int algoChoice = s.nextInt();
+			if (algoChoice == 1) {
 				System.out.println("You have chosen an agent that plays randomly");
-				System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
+				}
+			
+			else if (algoChoice == 4) {
+				System.out.println("You have chosen an agent that uses H-MINIMAX with a fixed depth cutoff and a-b pruning");
+				System.out.println("Please choose a CutOff Depth: ");
+				solution.Cutoff = s.nextInt();
+				System.out.println("CutOff at depth "+ solution.Cutoff+ " selected");
+			}
+			else {
+				System.out.println("Please make a valid Choice!");
+			}
+			
+			System.out.print("Do you want to play DARK (x) or LIGHT (o)?");
 
 				String colorChoice = s.next();
 				int t = 0;
@@ -952,12 +810,12 @@ public class game {
 
 				gameState.displayState8by8();
 				boolean userCanMove = true;
-				//boolean opponentCanMove = true;
+
 				while (userCanMove == true) {
 				System.out.println(" ");
 				int skips = 0;
 				
-				List<String> lm = legalMoves(t, gameState.getState()); //change to expand function in states
+				List<String> lm = legalMoves(t, gameState.getState()); 
 				if (lm.isEmpty()) { // game not over but rather player is skipped
 					skips++;
 					System.out.println("No moves to play, Skipped!");
@@ -978,39 +836,19 @@ public class game {
 						}
 						continue;
 					}
-					//for(String str: lm) {//generates all the child nodes for frontier
-						States duplicate = gameState;  
-						//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-						solution.populateFrontier(gameState, solution.makeNode(gameState));
-					//}
-						
-						
-
-//						
-//						if (algoChoice == 1) {
-//							randomMove(-t,  gameState);
-//						}
-//						
-//						else if (algoChoice == 2) {
-//							gameState = solution.graphSearch(-t);//AI plays using minimax
-//						}
-//						
-						gameState = solution.graphSearch(-t);//AI plays using minimax
-							//randomMove(-t,  gameState);
-						
-
-							
-							
-							
 					
-					//if(gameState == null)??
-					//randomMove(-t,  gameState);
+					solution.populateFrontier(gameState, solution.makeNode(gameState));
+					
+					if (algoChoice == 1) {
+						randomMove(-t,  gameState);
+					}
+					
+					else if (algoChoice == 4) {
+						gameState = solution.graphSearch(-t,4);//AI plays using minimax
+					}
+					
 					gameState.displayState8by8();
 					continue;
-					//game should play till end or until player quits, add q button to provide that option
-//					userCanMove = false;
-//					System.out.println("Game Over.");
-//					break;
 				}
 				System.out.println(" ");
 				System.out.println("Need help? legal moves possible: " + lm);
@@ -1025,11 +863,13 @@ public class game {
 					break;
 				}
 				if (lm.contains(yourMove) && userCanMove==true) {
-				gameState = copyMove(yourMove, t,gameState);}
+						gameState = copyMove(yourMove, t,gameState);
+				}
 				//else if(userCanMove==false) {}
-				else {System.out.println("Please choose a move that is legal."); continue;}
-				
-				
+				else {
+					System.out.println("Please choose a move that is legal."); 
+					continue;
+					}
 				gameState.displayState8by8();
 				System.out.println(" ");
 				System.out.println(" Your opponent has played: ");
@@ -1049,42 +889,24 @@ public class game {
 					}
 					continue;
 				}
-				//for(String str: lm) {//generates all the child nodes for frontier
-					States duplicate = gameState;  
-					//States childState =  userMove(str, -t,duplicate); //changed so that each state generated has a Xcount and Ocount
-				solution.populateFrontier(gameState, solution.makeNode(gameState));
-				//}
+				solution.populateFrontier(gameState, solution.makeNode(gameState));				
 				
+				if (algoChoice == 1) {
+					randomMove(-t,  gameState);
+				}
 				
+				else if (algoChoice == 4) {
+					gameState = solution.graphSearch(-t,4);//AI plays using minimax
+				}
 				
-				System.out.println(solution.frontier.isEmpty());
-				
-				
-				gameState = solution.graphSearch(-t);//AI plays using minimax
-				//if(gameState == null)??
-				
-				
-				
-		
-					//randomMove(-t,  gameState);
-				
-					
-					
-					
-					
 				System.out.println(" ");
-				System.out.println(gameState.utility);
+				//System.out.println(gameState.utility);
 				System.out.println(" ");
-			
 				gameState.displayState8by8();
-				
-				
 				System.out.println("Ocount = "+ gameState.Ocount + ", Xcount = "+ gameState.Xcount);
 				System.out.println("");
 			
 				}
-
-
 		
 		}
 
