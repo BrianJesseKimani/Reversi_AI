@@ -147,11 +147,16 @@ public class game {
 //}
 	
 	
-	public static void randomMove(int u, States state) {
+	public static void randomMove(int u, States state,int choice) {
 		int[][] array = state.getState();
 		Random rand = new Random(); 
 		String bit = "";
-		List<String> lm = legalMoves(u, array);
+		List<String> lm;
+		if(choice==1) 
+			lm = legalMoves(u, array);
+		else
+			lm = validMoves(u, array);
+		
 		if (lm.isEmpty()) {
 			System.out.println("No moves possible. Skip!");
 			
@@ -541,6 +546,348 @@ public class game {
 		hmap4by4.put("77", "h8");
 		
 	}
+	public static boolean checkFlip(int board[][], int x, int y, int X, int Y,int myPiece, int opponentPiece){
+
+		if (board[x][y] == opponentPiece){
+
+		while ((x >= 0) && (x < 8) && (y >= 0) && (y<8)){
+			
+			x += X;
+			y += Y;
+			
+			if ( (x < 0) || (x >= 8) || (y < 0) || (y >= 8) || board[x][y] == 0) // not consecutive and index within bounds
+			return false;
+			if (board[x][y] == myPiece)
+			return true; // At least one piece we can flip
+			else{}
+			// It is an opponent piece, just keep scanning in our direction
+			
+			}
+		}
+		return false; // Either no consecutive opponent pieces or hit the edge
+}
+
+public static List<String> validMoves( int piece,int board[][]){
+	//HashMap<String,String> map = new HashMap<>();
+	
+	List<String>  res = new ArrayList<>();
+// Check that the box are empty
+	for (int i=0; i<board.length; i++) {
+		for (int j=0; j<board.length; j++) {	
+	
+							if (board[i][j] == 0) {
+								
+								int opponent = -1;
+								if (piece == -1) opponent = 1;
+								String ans = "";
+								String check = "";
+								if(i == 0 && j==0){
+									
+									// Check to the right
+									if (checkFlip(board, i , j+1, 0, 1, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									// Check down
+									if (checkFlip(board, i+1, j, 1, 0, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									// Check down-right
+									if (checkFlip(board, i + 1, j +1, 1, 1, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+								}
+									
+									
+									if(i==0 && j==7) {
+										
+										if (checkFlip(board, i , j-1, 0, -1, piece, opponent)) {
+											
+											ans= String.valueOf(i) + String.valueOf(j);
+											check= hmap4by4.get(ans);
+											if(!(res.contains(check))) {
+										      res.add(check);
+										      //array[k-diffK][m-diffM] = 2;
+										      }
+//											ans = "";
+//											check = "";
+//											
+											continue;
+											}
+										
+
+										// Check down
+										if (checkFlip(board, i+1, j, 1, 0, piece, opponent)){
+											
+										ans= String.valueOf(i) + String.valueOf(j);
+										check= hmap4by4.get(ans);
+										if(!(res.contains(check))) {
+									      res.add(check);
+									      //array[k-diffK][m-diffM] = 2;
+									      }
+										continue;
+										
+										}
+										// Check down-left
+										if (checkFlip(board, i +1, j - 1, 1, -1, piece, opponent)){
+											
+										ans= String.valueOf(i) + String.valueOf(j);
+										check= hmap4by4.get(ans);
+										if(!(res.contains(check))) {
+									      res.add(check);
+									      //array[k-diffK][m-diffM] = 2;
+									      }
+										continue;
+										
+										}
+										
+										
+										
+	
+									}
+									
+									
+								
+								if(i==7&&j==7) {
+									if (checkFlip(board, i , j-1, 0, -1, piece, opponent)) {
+										
+										ans= String.valueOf(i) + String.valueOf(j);
+										check= hmap4by4.get(ans);
+										if(!(res.contains(check))) {
+									      res.add(check);
+									      //array[k-diffK][m-diffM] = 2;
+									      }
+//										ans = "";
+//										check = "";
+//										
+										continue;
+										}
+									// Check up
+									if (checkFlip(board, i-1, j , -1, 0, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									
+									
+									// Check up-left
+									if (checkFlip(board, i - 1, j - 1, -1, -1, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									
+									
+								}
+								
+							
+								if(i==7&&j==0) {
+
+									// Check to the right
+									if (checkFlip(board, i , j+1, 0, 1, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									
+									// Check up
+									if (checkFlip(board, i-1, j, -1, 0, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									
+									// Check up-right
+									if (checkFlip(board, i - 1, j + 1, -1, 1, piece, opponent)){
+										
+									ans= String.valueOf(i) + String.valueOf(j);
+									check= hmap4by4.get(ans);
+									if(!(res.contains(check))) {
+								      res.add(check);
+								      //array[k-diffK][m-diffM] = 2;
+								      }
+									continue;
+									
+									}
+									
+									
+									
+								}
+								
+							
+							
+							
+							// If we can flip in any direction, it is valid
+							
+							// Check to the left
+							
+							
+							if (j!=0 &&checkFlip(board, i, j-1, 0, -1, piece, opponent)) {
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+//							ans = "";
+//							check = "";
+//							
+							continue;
+							}
+							
+							
+							// Check to the right
+							if (j!=7 && checkFlip(board, i , j+1, 0, 1, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check down
+							if (i!=7 && checkFlip(board, i+1, j , 1, 0, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check up
+							if (i!=0 && checkFlip(board, i-1, j , -1, 0, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check down-left
+							if (i!=7 && j!=0 && checkFlip(board, i + 1, j - 1, 1, -1, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check down-right
+							if (i!=7 && j!=7&& checkFlip(board, i + 1, j + 1, 1, 1, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check up-left
+							if (i!=0 && j!=0 && checkFlip(board, i - 1, j - 1, -1, -1, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							// Check up-right
+							if (i!=0 && j!=7 && checkFlip(board, i - 1, j +1, -1, 1, piece, opponent)){
+								
+							ans= String.valueOf(i) + String.valueOf(j);
+							check= hmap4by4.get(ans);
+							if(!(res.contains(check))) {
+						      res.add(check);
+						      //array[k-diffK][m-diffM] = 2;
+						      }
+							continue;
+							
+							}
+							
+							
+						}
+		}
+	}
+
+return res;
+
+}
+
+
+
+
+
 	
 	
 
@@ -634,7 +981,7 @@ public class game {
 						
 							
 						if (algoChoice == 1) {
-							randomMove(-t,  gameState);
+							randomMove(-t,  gameState,1);
 						}
 						
 						else if (algoChoice == 2) {
@@ -698,7 +1045,7 @@ public class game {
 					solution.populateFrontier(gameState, solution.makeNode(gameState));
 					
 					if (algoChoice == 1) {
-						randomMove(-t,  gameState);
+						randomMove(-t,  gameState,1);
 					}
 					
 					else if (algoChoice == 2) {
@@ -815,13 +1162,13 @@ public class game {
 				System.out.println(" ");
 				int skips = 0;
 				
-				List<String> lm = legalMoves(t, gameState.getState()); 
+				List<String> lm = validMoves(t, gameState.getState()); 
 				if (lm.isEmpty()) { // game not over but rather player is skipped
 					skips++;
 					System.out.println("No moves to play, Skipped!");
-					lm = legalMoves(-t, gameState.getState());
+					lm = validMoves(-t, gameState.getState());
 					if(lm.isEmpty()) {
-						if(gameState.isTerminalState()) {
+						if(gameState.isTerminalState8by8()) {
 							gameState.GameOver();
 							userCanMove = false;
 							break;
@@ -840,7 +1187,7 @@ public class game {
 					solution.populateFrontier(gameState, solution.makeNode(gameState));
 					
 					if (algoChoice == 1) {
-						randomMove(-t,  gameState);
+						randomMove(-t,  gameState,3);
 					}
 					
 					else if (algoChoice == 4) {
@@ -876,9 +1223,9 @@ public class game {
 				System.out.println(" ");
 				System.out.println("Ocount = "+gameState.Ocount + ", Xcount = "+ gameState.Xcount);
 
-				lm = legalMoves(-t, gameState.getState());//legal moves for AI
+				lm = validMoves(-t, gameState.getState());//legal moves for AI
 				if(lm.isEmpty()) {
-					if(gameState.isTerminalState()) {
+					if(gameState.isTerminalState8by8()) {
 						gameState.GameOver();
 						userCanMove = false;
 						break;
@@ -892,7 +1239,7 @@ public class game {
 				solution.populateFrontier(gameState, solution.makeNode(gameState));				
 				
 				if (algoChoice == 1) {
-					randomMove(-t,  gameState);
+					randomMove(-t,  gameState,3);
 				}
 				
 				else if (algoChoice == 4) {

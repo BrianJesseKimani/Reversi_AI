@@ -155,7 +155,7 @@ public class Solution { // we create the sollution class.
 		return node;					
 	}
 	public States AlphaBeta_MaxValue(States state,int player,int alpha,int beta) {
-		if(state.isTerminalState8by8()) {
+		if(state.isTerminalState()) {
 			state.utility = state.Utility(Player);
 			return state;
 		}
@@ -165,7 +165,6 @@ public class Solution { // we create the sollution class.
 			States duplicate = state;
 			List<String> lm = game.legalMoves(player, state.getState());
 			if(lm.isEmpty()) {
-				
 				return state;
 			}
 			Stack<States> store = new Stack<States>();
@@ -188,7 +187,7 @@ public class Solution { // we create the sollution class.
 		}	
 	}
 	public States AlphaBeta_MinValue(States state, int player,int alpha,int beta) {
-		if(state.isTerminalState8by8()) {
+		if(state.isTerminalState()) {
 			state.utility = state.Utility(Player);
 			return state;
 		}
